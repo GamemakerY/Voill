@@ -4,6 +4,7 @@ from groq import Groq
 import pyaudio
 import wave
 import threading
+from app.text_handler import TextHandler
 
 
 load_dotenv()
@@ -11,20 +12,20 @@ groq_api_key = os.getenv("GROQ_API")
 
 
 class VoiceModel:
-    def __init__(self, api_key='', channels=2, rate=44100, chunk=1024, sample_format=pyaudio.paInt16):
+    def __init__(self, client, channels=2, rate=44100, chunk=1024, sample_format=pyaudio.paInt16):
         self.channels = channels
         self.rate = rate
         self.chunk = chunk
         self.sample_format = sample_format
 
-        self.client = Groq(
-            api_key=api_key
-            )  
+        self.client = client
         
         self.is_recording = False
         self.frames=[]
 
         self.thread = threading.Thread(target=self.record)
+
+        self.text_handler = TextHandler(client=self.client)
     
     def record(self):
         self.p = pyaudio.PyAudio()
@@ -69,7 +70,12 @@ class VoiceModel:
                 language='en',
                 response_format="verbose_json",
             )
-        print(transcription.text)
+        print(f"Transcripted text: {transcription.text}")
+
+        print(" ")
+
+        self.text_handler.out_text(transcription.text)
+
         os.remove("output.wav")
     
     def on_press(self, key):

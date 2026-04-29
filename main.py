@@ -8,10 +8,14 @@ load_dotenv()
 groq_api_key = os.getenv("GROQ_API")
 
 def main():
-    model = VoiceModel(api_key=groq_api_key)
-    print("Model initiated")
-    model.is_active = False
-    with keyboard.Listener(on_press=model.on_press, on_release=model.on_release) as listener:
+    client = Groq(
+            api_key=groq_api_key
+            )  
+    
+    voice_model = VoiceModel(client)
+
+    voice_model.is_active = False
+    with keyboard.Listener(on_press=voice_model.on_press, on_release=voice_model.on_release) as listener:
         print("Listening..")
         listener.join()
     pass
