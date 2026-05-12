@@ -21,6 +21,7 @@ class VoiceModel:
         self.client = client
         
         self.is_recording = False
+        self.key_combo = {}
         self.frames=[]
 
         self.thread = threading.Thread(target=self.record)
@@ -72,15 +73,13 @@ class VoiceModel:
             )
         print(f"Transcripted text: {transcription.text}")
 
-        print(" ")
-
         self.text_handler.out_text(transcription.text)
 
         os.remove("output.wav")
     
-    def on_press(self, key):
+    def on_press(self):
         try:
-            if key.char == 'r' and not self.is_recording:
+            if not self.is_recording:
                 print('Key pressed')
                 self.is_recording = True
                 self.is_active = True
@@ -88,14 +87,14 @@ class VoiceModel:
                 self.thread.start()
         except AttributeError:
             pass
-    
-    def on_release(self, key):
-        try:
-            if key.char=='r':
-                self.is_recording = False
-                self.is_active = False
-        except AttributeError:
+
+        except Groq.BadRequestError as e:
             pass
+    
+    def on_release(self):
+        self.is_recording = False
+        self.is_active = False
+
 
 
 

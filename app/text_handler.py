@@ -10,7 +10,7 @@ class TextHandler:
         #base_path = Path(__file__).parent.parent 
         #file_path = base_path / "prompts" / "v1.txt"
 
-        with open("prompts/v1.txt", 'r') as file:
+        with open("prompts/v3.txt", 'r') as file:
             self.system_prompt = file.read()
 
     def out_text(self, text):
