@@ -20,7 +20,7 @@ Contextual Correction: If a word is clearly a slip of the tongue or a filler, re
 
 Preserve Voice: Do not formalize the language. Keep slang, contractions (can't, won't), or informal phrasing (gonna, wanna) exactly as they are. Do not paraphrase for "better" writing.
 
-Formatting: Apply standard punctuation and capitalization.
+Formatting: Apply standard punctuation and capitalization. Convert any Devanagari text in this transcription into phonetic Latin script (Hinglish)
 
 Constraint:
 Output the cleaned text only. Do not provide any commentary, introductions, or explanations.

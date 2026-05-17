@@ -27,7 +27,6 @@ def main():
     def on_release(key):
         if key in key_combo:
             current_keys.remove(key)
-            print(f"Key removed: {key}")
             voice_model.on_release()
 
     with keyboard.Listener(on_press=on_press,on_release=on_release) as listener:
@@ -48,4 +47,10 @@ if __name__ == "__main__":
 BUGS:
 1. Might still be 'remembering' previous recordings (It was working but I think I broke it again)
 
-2. The key combo detection isn't working that well, perhaps the on_remove isn't removing the key properly or holding the key has unintended effects.'''
+2. (FIxed) The key combo detection isn't working that well, perhaps the on_remove isn't removing the key properly or holding the key has unintended effects.
+
+PLAN:
+1. Figure out if possible as an input device or an app simply paste clipboard
+2. Make a frontend for this
+3. See if it can have better multi-lingual support
+'''

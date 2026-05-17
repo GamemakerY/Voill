@@ -1,10 +1,12 @@
 from groq import Groq
 from pathlib import Path
-import os
+from pynput.keyboard import Controller
+
 
 class TextHandler:
     def __init__(self, client):
         self.client = client 
+        self.keyboard = Controller()
         print("Model initialized")
         
         #base_path = Path(__file__).parent.parent 
@@ -35,7 +37,7 @@ class TextHandler:
 
         print("Done")
 
-        print(self.completion.choices[0].message.content)
+        self.keyboard.type(self.completion.choices[0].message.content)
         #print(self.completion.)
         '''
         for chunk in self.completion:

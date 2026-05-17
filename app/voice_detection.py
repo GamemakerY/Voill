@@ -1,4 +1,5 @@
 import os
+import time
 from dotenv import load_dotenv
 from groq import Groq
 import pyaudio
@@ -27,6 +28,7 @@ class VoiceModel:
         self.thread = threading.Thread(target=self.record)
 
         self.text_handler = TextHandler(client=self.client)
+        
     
     def record(self):
         self.p = pyaudio.PyAudio()
@@ -49,6 +51,7 @@ class VoiceModel:
         print("Recording done")
 
         self.save_file()
+        start_time = time.time()
         self.detect_text()
     
     def save_file(self):
@@ -62,15 +65,15 @@ class VoiceModel:
     
     def detect_text(self, audio_file='output.wav'):
         self.audio_file = audio_file
-        
+        self.time1 = time.time()
         with open(audio_file, "rb") as file:
             transcription = self.client.audio.transcriptions.create(
                 file=(audio_file, file.read()),
-                model = 'whisper-large-v3-turbo',
+                model = 'whisper-large-v3-turbo', #removed turbo, temporarily
                 temperature=0,
-                language='en',
                 response_format="verbose_json",
             )
+            #language parameter
         print(f"Transcripted text: {transcription.text}")
 
         self.text_handler.out_text(transcription.text)
