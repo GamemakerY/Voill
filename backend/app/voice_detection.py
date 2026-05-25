@@ -1,6 +1,4 @@
 from logging import exception
-import os
-import time
 from app.client import Client
 import pyaudio
 import wave
@@ -11,6 +9,7 @@ from fastapi import UploadFile
 
 class VoiceModel:
     def __init__(self, client, channels=2, rate=44100, chunk=1024, sample_format=pyaudio.paInt16):
+        #Remove record from here, either separate or entirely remove after front-end
         self.channels = channels
         self.rate = rate
         self.chunk = chunk
@@ -48,8 +47,7 @@ class VoiceModel:
         print("Recording done")
 
         self.save_file()
-        start_time = time.time()
-        #self.detect_text()
+        #Just for testing
     
     def save_file(self):
         wf = wave.open("output.wav", 'w')

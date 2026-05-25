@@ -7,9 +7,6 @@ class TextHandler:
     def __init__(self, client):
         self.client = client 
         print("Model initialized")
-        
-        #base_path = Path(__file__).parent.parent 
-        #file_path = base_path / "prompts" / "v1.txt"
 
         with open("prompts/v3.txt", 'r') as file:
             self.system_prompt = file.read()
@@ -37,5 +34,3 @@ class TextHandler:
         print("Done")
 
         return (self.completion.choices[0].message.content)
-        #self.keyboard.type(self.completion.choices[0].message.content) 
-        #print(self.completion.)
