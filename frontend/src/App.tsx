@@ -4,6 +4,7 @@ import { Settings } from "lucide-react"
 import { setEventTypes, startListening } from "tauri-plugin-user-input-api";
 import {startRecording, stopRecording, checkPermission, requestPermission} from "tauri-plugin-audio-recorder-api";
 import {tempDir, join} from '@tauri-apps/api/path';
+import {readFile} from "@tauri-apps/plugin-fs"
 
 //When working prototype is done, make sure to make this all modular!!
 await setEventTypes(["KeyPress", "KeyRelease"] as any);
@@ -11,6 +12,10 @@ await setEventTypes(["KeyPress", "KeyRelease"] as any);
 const key_combo = new Set(["AltLeft", "KeyR"]);
 const key_pressed = new Set();
 let is_recording = false;
+
+const tempFolder = await tempDir()
+const filePath = await join(tempFolder, "output")
+const fileSavePath = await join(tempFolder, "output.wav")
 
 const permission = await checkPermission();
 if (!permission.granted) {
@@ -34,10 +39,8 @@ await startListening(async (event) => {
     if(!is_recording){
         //later add checks for permission
       is_recording=true;
-      const tempFolder = await tempDir()
-      const filePath = await join(tempFolder, "output")
-      const fileSavePath = await join(tempFolder, "output.wav")
-      console.log("File saved in: ", tempFolder)
+
+      console.log("File will be saved in: ", tempFolder)
       await startRecording({
         outputPath: (filePath),
         quality: "medium", 
@@ -56,6 +59,10 @@ await startListening(async (event) => {
         console.log(`Recorded ${result.durationMs}ms to ${result.filePath}`);
         console.log(`File size: ${result.fileSize} bytes`);
         console.log(`Sample rate: ${result.sampleRate}Hz, Channels: ${result.channels}`);
+
+        const audio_data = await readFile(fileSavePath)
+        const audioBlob = new Blob([audio_data], { type: 'audio/wav' }); 
+        getText(audioBlob)//Or mp3? All optimizations later
         is_recording=false;
     }
 
@@ -63,7 +70,24 @@ await startListening(async (event) => {
   };
 });
 
+//http://127.0.0.1:8000
 
+async function getText(audio: Blob) {
+  const url = 'http://localhost:8000/audios';
+  try{
+    const formData = new FormData();
+    formData.append('file', audio, "output.wav")
+    const response = await fetch(url, {
+      method: "POST",
+      body: formData
+    });
+    const message = await response.text();
+    console.log(message)
+  }
+  catch(error){
+    console.error(error.message);
+  }
+}
 
 //Add dragging
 //bg-muted for center text?

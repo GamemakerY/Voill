@@ -8,6 +8,11 @@
     "opener:default",
     "core:window:allow-start-dragging",
     "user-input:default",
-    "audio-recorder:default"
+    "audio-recorder:default",
+    "fs:allow-temp-read", 
+    {
+      "identifier": "fs:allow-temp-read",
+      "allow": [{ "path": "$TEMP/*" }]
+    }
   ]
 }
