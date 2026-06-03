@@ -1,7 +1,7 @@
 import "./index.css";
 import { Button } from "./components/ui/button";
 import { Settings } from "lucide-react"
-import { setEventTypes, startListening } from "tauri-plugin-user-input-api";
+import { setEventTypes, startListening, text } from "tauri-plugin-user-input-api";
 import {startRecording, stopRecording, checkPermission, requestPermission} from "tauri-plugin-audio-recorder-api";
 import {tempDir, join} from '@tauri-apps/api/path';
 import {readFile} from "@tauri-apps/plugin-fs"
@@ -82,7 +82,7 @@ async function getText(audio: Blob) {
       body: formData
     });
     const message = await response.text();
-    console.log(message)
+    await text(message);
   }
   catch(error){
     console.error(error.message);
@@ -94,7 +94,7 @@ async function getText(audio: Blob) {
 function App() {
   return (
     <main className="min-h-screen flex flex-col w-full bg-[#0f1115] text-slate-100">
-      <div data-tauri-drag-region className="flex flex-row h-10 items-center justify-between bg-card text-card-foreground select-none px-4 bg-[#161920] border-b border-slate-800/60 shadow-sm">
+      <div data-tauri-drag-region className="flex flex-row h-10 items-center justify-between bg-card text-card-foreground select-none px-4 border-b  border-slate-800/60 ">
         <span className="text-xl font-bold items-center tracking-tight">Voill</span>
         <Button className="h-9 w-9 hover:bg-accent"  variant="ghost">
           <Settings className="size-6" />
