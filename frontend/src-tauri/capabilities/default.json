@@ -10,6 +10,7 @@
     "user-input:default",
     "audio-recorder:default",
     "fs:allow-temp-read", 
+    "core:window:allow-close",
     {
       "identifier": "fs:allow-temp-read",
       "allow": [{ "path": "$TEMP/*" }]

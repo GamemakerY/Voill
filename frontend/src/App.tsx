@@ -1,13 +1,16 @@
 import "./index.css";
 import { Button } from "./components/ui/button";
-import { Settings } from "lucide-react"
+import { AppWindow, Settings, X} from "lucide-react"
 import { setEventTypes, startListening, text } from "tauri-plugin-user-input-api";
 import {startRecording, stopRecording, checkPermission, requestPermission} from "tauri-plugin-audio-recorder-api";
 import {tempDir, join} from '@tauri-apps/api/path';
-import {readFile} from "@tauri-apps/plugin-fs"
+import {readFile} from "@tauri-apps/plugin-fs";
+import { getCurrentWindow } from '@tauri-apps/api/window';
+
 
 //When working prototype is done, make sure to make this all modular!!
 await setEventTypes(["KeyPress", "KeyRelease"] as any);
+const appWindow = getCurrentWindow();
 
 const key_combo = new Set(["AltLeft", "KeyR"]);
 const key_pressed = new Set();
@@ -96,9 +99,16 @@ function App() {
     <main className="min-h-screen flex flex-col w-full bg-[#0f1115] text-slate-100">
       <div data-tauri-drag-region className="flex flex-row h-10 items-center justify-between bg-card text-card-foreground select-none px-4 border-b  border-slate-800/60 ">
         <span className="text-xl font-bold items-center tracking-tight">Voill</span>
+
+        <div>
         <Button className="h-9 w-9 hover:bg-accent"  variant="ghost">
           <Settings className="size-6" />
         </Button>
+        <Button className="h-9 w-9 hover:bg-accent" variant="ghost" onClick={() => appWindow.close()}>
+          <X className="size-6" />
+        </Button>
+        </div>
+
       </div>
       <div className="flex-1 flex flex-col items-center justify-center bg-background px-4">
         <h1 className="text-xl text-muted-foreground text-center select-none">When you are ready, hold Alt + R to start!</h1>
