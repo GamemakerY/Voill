@@ -1,11 +1,12 @@
+import asyncio
+from groq import PermissionDeniedError
 from app import text_handler
 from fastapi import FastAPI, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
-from typing import Annotated
+from fastapi.responses import PlainTextResponse
 from app.voice_detection import VoiceModel
 from app.client import Client
 from app.text_handler import TextHandler
-from pynput import keyboard
 import time
 
 app = FastAPI()
@@ -21,46 +22,36 @@ app.add_middleware(
     allow_headers=["*"],  
 )
 
-@app.post("/audios")
-def process_audio(file: UploadFile = File(...)) -> str: 
+@app.post("/audios", response_class=PlainTextResponse)
+async def process_audio(file: UploadFile = File(...), max_retries=3) -> str: 
     final_text = ''
-    try:
-        start_time = time.time()
-        file_bytes = file.file.read() 
-        file_obj = (file.filename, file_bytes)
-        transcripted_text = voice_model.detect_text(file_obj)
-        final_text = texthandler.out_text(transcripted_text)
-        end_time = time.time()
-    except Exception as e:
-        import traceback
-        print(traceback.format_exc())
-        raise e
+    for attempt in range(max_retries):
+        try:
+            start_time = time.time()
+
+            #file_obj = (file.filename, file_bytes)
+
+            transcripted_text = await voice_model.detect_text(file) #MOst time
+            end_time_1 = time.time()
+
+            final_text = texthandler.out_text(transcripted_text)
+
+            end_time_2 = time.time()
+
+            print(f"Time 1: {end_time_1-start_time}, Time 2: {end_time_2-end_time_1}")
+            end_time = time.time()
+            print(end_time-start_time)
+
+            return(final_text)
+
+        except PermissionDeniedError as e:
+            if "403" in str(e) and attempt < max_retries - 1:
+                await file.seek(0)
+                await asyncio.sleep(1)
+                continue
+            raise e
     #Remove file, after processing
-    return (f"{final_text}, time: {(end_time - start_time)}")
-
-def main():
-    voice_model.is_active = False
-
-    key_combo = {keyboard.KeyCode.from_char('r'),keyboard.Key.alt_l}
-    current_keys = set()
-
-    def on_press(key):
-        if key in key_combo:
-            current_keys.add(key)
-        if current_keys.issuperset(key_combo):
-            voice_model.on_press()
-
-    def on_release(key):
-        if key in key_combo:
-            current_keys.remove(key)
-            voice_model.on_release()
-
-    with keyboard.Listener(on_press=on_press,on_release=on_release) as listener:
-        listener.join()
-    pass
-
-if __name__ == "__main__":
-    main()
+    return (final_text)
 
 '''
 BUGS:
@@ -69,7 +60,7 @@ BUGS:
 2. (FIxed) The key combo detection isn't working that well, perhaps the on_remove isn't removing the key properly or holding the key has unintended effects.
 
 PLAN:
-1. (Paste clipboard implemented, nvm)Figure out if possible as an input device or an app simply paste clipboard 
-2. Make a frontend for this
+1. (Paste clipboard implemented)Figure out if possible as an input device or an app simply paste clipboard 
+2. (Done) Make a frontend for this
 3. See if it can have better multi-lingual support
 '''

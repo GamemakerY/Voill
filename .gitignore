@@ -15,3 +15,6 @@ wheels/
 .vscode/
 Thumbs.db
 .uv/
+
+backend/app/record(Not to be used).py
+logs/
