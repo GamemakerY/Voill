@@ -3,7 +3,7 @@ import { readFile } from "@tauri-apps/plugin-fs";
 import { useEffect, useState } from "react";
 import { checkPermission, requestPermission, startRecording, stopRecording } from "tauri-plugin-audio-recorder-api";
 import { setEventTypes, startListening, text } from "tauri-plugin-user-input-api";
-
+import { register } from '@tauri-apps/plugin-global-shortcut';
 
 export function useAudioRecorder(){
     const [isRecording,setisRecording] = useState<boolean>(false);
@@ -39,7 +39,7 @@ export function useAudioRecorder(){
                         key_pressed.add(event.key)
                     }
                 }
-            if(key_pressed.isSupersetOf(key_combo)){
+            if(key_pressed.has("AltLeft") && key_pressed.has("KeyR")){
                 if(!is_recording){
                     //later add checks for permission
                     setisRecording(true);
@@ -57,7 +57,7 @@ export function useAudioRecorder(){
                 if(key_pressed.has(event.key)){
                     key_pressed.delete(event.key)
                     
-                    if(is_recording && !key_pressed.isSupersetOf(key_combo)){
+                    if(is_recording && (!key_pressed.has("AltLeft") || !key_pressed.has("KeyR"))){
                         
                         const result = await stopRecording();
                         console.log(`Recorded ${result.durationMs}ms to ${result.filePath}`);
@@ -71,7 +71,8 @@ export function useAudioRecorder(){
                         getText(audioBlob)//Or mp3? All optimizations later
                     }
                 }
-            };});
+            };
+        });
         async function getText(audio: Blob) {
             const url = 'http://localhost:8000/audios';
             try{
