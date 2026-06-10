@@ -3,11 +3,11 @@ import { readFile } from "@tauri-apps/plugin-fs";
 import { useEffect, useState } from "react";
 import { checkPermission, requestPermission, startRecording, stopRecording } from "tauri-plugin-audio-recorder-api";
 import { setEventTypes, startListening, text } from "tauri-plugin-user-input-api";
-import { register } from '@tauri-apps/plugin-global-shortcut';
 
 export function useAudioRecorder(){
     const [isRecording,setisRecording] = useState<boolean>(false);
     const [message, setMessage] = useState<string>("");
+    const [view, setView] = useState<string>("App")
     //A variable for processing later, better error handling for message
 
     useEffect(()=>{
@@ -95,5 +95,5 @@ export function useAudioRecorder(){
     setupRecorder();
 
 }, []);
-    return{isRecording, message};
+    return{isRecording, message, view, setView};
 }
