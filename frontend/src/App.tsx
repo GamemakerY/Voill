@@ -24,3 +24,10 @@ function App() {
   );
 }
 export default App;
+
+{
+  /*
+  BUGS:
+  1. AI takes the text as actual prompt
+  2. Keyboard doesn't type properly */
+}

@@ -1,20 +1,28 @@
-import { Button } from "@/components/ui/button"
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog"
+import { Button } from "@/components/ui/button";
+import { ButtonGroup } from "@/components/ui/button-group";
+import { SettingCard } from "@/components/ui/settingcard";
 
-function Settings(){
-    return(
-      <div className="flex items-center justify-center">
-        <h1>Test</h1>
-      </div>
+
+export function Settings(){
+  return(
+        <div className='flex-1 flex flex-col bg-background text-card-foreground px-4 py-4 w-full h-screen max-h-screen overflow-hidden'>
+          <SettingCard title="Theme" description="Choose how Voill appears on your device." children={
+            <ButtonGroup className="flex border-2 border-border rounded-full overflow-hidden shadow-[4px_4px_0px_var(--border)] bg-card">
+              <Button onClick={()=>{
+                document.documentElement.classList.remove('light', 'dark')
+                document.documentElement.classList.add('light')
+              }}>Light</Button>
+              <Button onClick={()=>{
+                document.documentElement.classList.remove('light', 'dark')
+                document.documentElement.classList.add('dark')
+              }}>Dark</Button>
+              <Button>System</Button>
+            </ButtonGroup>
+          }/>
+        </div>
     )
 }
 
-export {Settings}
+
+
+//<Switch className="border-2 border-border box-content p-0.5 shadow-[4px_4px_0px_var(--border)]"/>
