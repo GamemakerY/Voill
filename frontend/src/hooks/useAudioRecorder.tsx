@@ -3,6 +3,7 @@ import { readFile } from "@tauri-apps/plugin-fs";
 import { useEffect, useState } from "react";
 import { checkPermission, requestPermission, startRecording, stopRecording } from "tauri-plugin-audio-recorder-api";
 import { setEventTypes, startListening, text } from "tauri-plugin-user-input-api";
+// Note: uninstall this, '@tauri-apps/plugin-clipboard-manager';
 
 export function useAudioRecorder(){
     const [isRecording,setisRecording] = useState<boolean>(false);
@@ -16,8 +17,6 @@ export function useAudioRecorder(){
             await setEventTypes(["KeyPress", "KeyRelease"] as any);
             const key_combo = new Set(["AltLeft", "KeyR"]);
             const key_pressed = new Set();
-            
-
             const tempFolder = await tempDir()
             const filePath = await join(tempFolder, "output")
             const fileSavePath = await join(tempFolder, "output.wav")
@@ -73,6 +72,15 @@ export function useAudioRecorder(){
                 }
             };
         });
+        const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
+        async function text_w_delay(response_text:string, delay:number=15){
+            for (const char of response_text) {
+                await text(char); 
+                await sleep(delay); 
+            }
+        }
+
         async function getText(audio: Blob) {
             const url = 'http://localhost:8000/audios';
             try{
@@ -85,7 +93,9 @@ export function useAudioRecorder(){
         const responseText = await response.text();
         setMessage(responseText);
 
-        await text(responseText);
+        await text_w_delay(responseText);
+        //await text(responseText, { delay: 20 });
+        //text(responseText);
     }
     catch(error){
     console.error(error.message);

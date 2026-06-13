@@ -2,12 +2,10 @@ import { TopBar } from "./components/layout/TopBar";
 import { MainWindow } from "./components/layout/MainWindow";
 import { useAudioRecorder } from "./hooks/useAudioRecorder";
 import { AppContext } from "./contexts/AppContext";
-import { useContext } from "react";
 import { Settings } from "./pages/Settings";
 
 function App() {
   const {isRecording, message, view, setView} = useAudioRecorder();
-  const context = useContext(AppContext);
 
   return (
     <AppContext.Provider value={
