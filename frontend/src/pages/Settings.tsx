@@ -1,9 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
 import { SettingCard } from "@/components/ui/settingcard";
+import { AppContext } from "@/contexts/AppContext";
+import { useContext } from "react";
 
 
 export function Settings(){
+  const context = useContext(AppContext);
   return(
         <div className='flex-1 flex flex-col bg-background text-card-foreground px-4 py-4 w-full h-screen max-h-screen overflow-hidden'>
           <SettingCard title="Theme" description="Choose how Voill appears on your device." children={
@@ -11,12 +14,13 @@ export function Settings(){
               <Button onClick={()=>{
                 document.documentElement.classList.remove('light', 'dark')
                 document.documentElement.classList.add('light')
+
               }}>Light</Button>
               <Button onClick={()=>{
                 document.documentElement.classList.remove('light', 'dark')
                 document.documentElement.classList.add('dark')
               }}>Dark</Button>
-              <Button>System</Button>
+              
             </ButtonGroup>
           }/>
         </div>

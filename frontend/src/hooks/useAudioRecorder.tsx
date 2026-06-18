@@ -2,17 +2,19 @@ import { join, tempDir } from "@tauri-apps/api/path";
 import { readFile } from "@tauri-apps/plugin-fs";
 import { useEffect, useState } from "react";
 import { checkPermission, requestPermission, startRecording, stopRecording } from "tauri-plugin-audio-recorder-api";
-import { setEventTypes, startListening, text } from "tauri-plugin-user-input-api";
+import { key, setEventTypes, startListening, text } from "tauri-plugin-user-input-api";
 // Note: uninstall this, '@tauri-apps/plugin-clipboard-manager';
 
 export function useAudioRecorder(){
     const [isRecording,setisRecording] = useState<boolean>(false);
     const [message, setMessage] = useState<string>("");
     const [view, setView] = useState<string>("App")
+
     //A variable for processing later, better error handling for message
 
     useEffect(()=>{
         let is_recording = false;
+
         async function setupRecorder(){
             await setEventTypes(["KeyPress", "KeyRelease"] as any);
             const key_combo = new Set(["AltLeft", "KeyR"]);
@@ -80,6 +82,20 @@ export function useAudioRecorder(){
                 await sleep(delay); 
             }
         }
+        async function multiline_text(response_text:string){
+            const lines = response_text.split('\n');
+
+            for(let i=0; i < lines.length-1; i++){
+                await text(lines[i])
+                await key("KeyPress", "ShiftLeft");
+                await key("KeyClick", "Enter");
+                await key("KeyRelease", "ShiftLeft");
+            }
+            if(lines.length>0){
+                await text(lines[lines.length-1])
+            }
+
+        }
 
         async function getText(audio: Blob) {
             const url = 'http://localhost:8000/audios';
@@ -92,9 +108,8 @@ export function useAudioRecorder(){
                 });
         const responseText = await response.text();
         setMessage(responseText);
-
-        await text_w_delay(responseText);
-        //await text(responseText, { delay: 20 });
+        //await text_w_delay(responseText);
+        await multiline_text(responseText);
         //text(responseText);
     }
     catch(error){

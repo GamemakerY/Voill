@@ -5,8 +5,7 @@ import { AppContext } from "./contexts/AppContext";
 import { Settings } from "./pages/Settings";
 
 function App() {
-  const {isRecording, message, view, setView} = useAudioRecorder();
-
+  const { isRecording, message, view, setView} = useAudioRecorder();
   return (
     <AppContext.Provider value={
       {isRecording,
@@ -26,6 +25,16 @@ export default App;
 {
   /*
   BUGS:
-  1. AI takes the text as actual prompt
-  2. Keyboard doesn't type properly */
+  1. AI takes the text as actual prompt (Basically fixed)
+  2. Keyboard doesn't type properly (Fixed)
+  3. For spaces, it just presses enter (Meaning it sends it in a prompt box), really wish a clipboard feature could be ipmlemented without removing user's clipboard or some alternative (Fixed)
+  4. Limitation with Notepad - Doesn't type properly  
+
+  BASIC FEATURES (Before Alpha):
+  1. Add working system theme option
+
+  FEATURES (For alpha version)
+  1. App minizes to system tray and works with a small icon in that form
+  2. 
+  */
 }
