@@ -32,7 +32,7 @@ class VoiceModel:
         file_obj = (audio_file.filename, file_bytes)
         transcription = self.client.audio.transcriptions.create(
             file=file_obj,
-            model = 'whisper-large-v3-turbo',
+            model = 'whisper-large-v3-turbo', #originally different
             temperature=0,
             response_format="verbose_json",
             )
