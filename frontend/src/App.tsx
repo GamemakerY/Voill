@@ -3,21 +3,25 @@ import { MainWindow } from "./components/layout/MainWindow";
 import { useAudioRecorder } from "./hooks/useAudioRecorder";
 import { AppContext } from "./contexts/AppContext";
 import { Settings } from "./pages/Settings";
+import { ConfigContext } from "./contexts/ConfigContext";
+import { configHook } from "./hooks/useConfig";
 
 function App() {
   const { isRecording, message, view, setView} = useAudioRecorder();
+  const {theme, setTheme, GroqAPIKey, setGroqAPIKey} = configHook();
   return (
+    <ConfigContext.Provider value = {
+      {theme, setTheme, GroqAPIKey, setGroqAPIKey}
+      }>
     <AppContext.Provider value={
-      {isRecording,
-        message,
-        view,
-      setView}
+      {isRecording, message, view, setView}
       }>
     <div className="min-h-screen flex flex-col w-full bg-[#0f1115] text-slate-100">
         <TopBar/>
         {view === 'Settings' ? <Settings/>: <MainWindow/>}
     </div>
     </AppContext.Provider>
+    </ConfigContext.Provider>
   );
 }
 export default App;

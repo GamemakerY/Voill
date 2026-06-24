@@ -3,23 +3,35 @@ import { Separator } from "@base-ui/react";
 interface SettingCardProps{
     title: string;
     description: string;
-    children: React.ReactNode;
+    learnMore?: string;
+    layout: string;
+    children?: React.ReactNode;
 }
 
-export function SettingCard({title, description, children}:SettingCardProps){
-
-    return(
-<div>
-        <div className="flex w-full justify-between">
-          <div>
+export function SettingCard({title, description, learnMore, layout, children}:SettingCardProps){
+  return(
+      <div>
+        {layout === 'h' ? 
+        (<div className="flex w-full justify-between">
+          <div className="space-y-1">
           <div className="leading-none font-medium">{title}</div>
-            <div className="text-muted-foreground">{description}</div>
+            <div className="text-muted-foreground font-light">{description}</div>
           </div>
           <div>
             {children}
           </div>
-        </div>
-        <Separator className="w-full h-px bg-current opacity-15 my-4 shrink-0 "/>
+        </div>) : (
+        <div className="flex w-full justify-between flex-col">
+          <div className="space-y-1">
+          <div className="leading-none font-medium">{title}</div>
+            <div className="text-muted-foreground font-light">{description}</div>
+          </div>
+          <div>
+            {children}
+          </div>
+        </div>)      
+}
+<Separator className="w-full h-px bg-current opacity-15 my-4 shrink-0"/>
 </div>
-)
+  )
 }
