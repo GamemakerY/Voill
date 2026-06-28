@@ -4,11 +4,11 @@ import { useAudioRecorder } from "./hooks/useAudioRecorder";
 import { AppContext } from "./contexts/AppContext";
 import { Settings } from "./pages/Settings";
 import { ConfigContext } from "./contexts/ConfigContext";
-import { configHook } from "./hooks/useConfig";
+import { useConfig } from "./hooks/useConfig";
 
 function App() {
   const { isRecording, message, view, setView} = useAudioRecorder();
-  const {theme, setTheme, GroqAPIKey, setGroqAPIKey} = configHook();
+  const {theme, setTheme, GroqAPIKey, setGroqAPIKey} = useConfig();
   return (
     <ConfigContext.Provider value = {
       {theme, setTheme, GroqAPIKey, setGroqAPIKey}
