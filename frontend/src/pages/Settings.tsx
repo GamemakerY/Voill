@@ -1,11 +1,35 @@
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
 import { SettingCard } from "@/components/ui/settingcard";
+import { validateAPIKey } from "@/components/utils/auth";
 import { useConfig } from "@/contexts/ConfigContext";
-import { Input } from "@base-ui/react";
+import { Form, Input } from "@base-ui/react";
+import { useState } from "react";
+
+
 
 export function Settings(){
-  const {theme, setTheme} = useConfig();
+
+  const { setTheme, setGroqAPIKey} = useConfig();
+  const [ inputKey, setInputKey] = useState<string>('');
+
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>){
+    e.preventDefault();
+
+    const form = e.target;
+    const formData = new FormData(form);
+    const groqAPIKey = formData.get("GroqAPIKey");
+
+    const isValidated = validateAPIKey(groqAPIKey)
+
+    if(isValidated){
+      setGroqAPIKey(groqAPIKey)
+    }
+    else {
+      alert("Invalid API Key")
+    }
+
+  }
 
   return(
         <div className='flex-1 flex flex-col bg-background text-card-foreground px-4 py-4 w-full h-screen max-h-screen overflow-hidden'>
@@ -23,10 +47,13 @@ export function Settings(){
     <SettingCard title="Groq API Key" layout = 'v' description="Enter your API key to power Voill's AI features. It is stored locally."
         children={
     <div className="relative flex items-center w-full max-w-3xl mt-2 group"> 
-      <Input type="password" placeholder="gsk_..." className="w-full pl-4 pr-20 rounded-full border text-foreground border-black dark:border-slate-800 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.15)] h-10 text-sm bg-transparent focus-visible:ring-0"/>
-      <Button size="sm" className="absolute right-1.5 h-7 rounded-full border border-black dark:border-slate-800 bg-primary text-primary-foreground font-medium px-4 text-xs shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[0.5px] hover:translate-y-[0.5px] hover:shadow-none transition-all">
+      <Form onSubmit={handleSubmit} className="w-full">
+        <Input name="GroqAPIKey" onChange={(e) => setInputKey(e.target.value)} type="password" placeholder="gsk_..." className="w-full pl-4 pr-20 rounded-full border text-foreground border-black dark:border-slate-800 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.15)] h-10 text-sm bg-transparent focus-visible:ring-0"/>
+        <Button 
+      type="submit" size="sm" className="relative rounded-full border border-black dark:border-slate-800 bg-primary text-primary-foreground font-medium px-4 text-xs shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[0.5px] hover:translate-y-[0.5px] hover:shadow-none transition-all">
         Save
-      </Button>
+        </Button>
+      </Form >
     </div>
           }/>
 

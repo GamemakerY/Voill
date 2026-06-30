@@ -1,7 +1,8 @@
 import asyncio
 from groq import PermissionDeniedError
 from app import text_handler
-from fastapi import FastAPI, File, UploadFile
+from fastapi import FastAPI, File, UploadFile, Depends
+from fastapi.security import APIKeyHeader
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import PlainTextResponse
 from app.voice_detection import VoiceModel
@@ -19,11 +20,13 @@ app.add_middleware(
     allow_origins=["*"],  #Later
     allow_credentials=False,
     allow_methods=["*"],  
-    allow_headers=["*"],  
+    allow_headers=["APIKey", "Content-Type"],  
 )
+header_scheme = APIKeyHeader(name="APIKey", auto_error=False)
 
 @app.post("/audios", response_class=PlainTextResponse)
-async def process_audio(file: UploadFile = File(...), max_retries=3) -> str: 
+async def process_audio(api_key:str | None = Depends(header_scheme), file: UploadFile = File(...), max_retries=3) -> str: 
+    print("API Key detected: ", api_key)
     final_text = ''
     for attempt in range(max_retries):
         try:

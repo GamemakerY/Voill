@@ -3,12 +3,14 @@ import { readFile } from "@tauri-apps/plugin-fs";
 import { useEffect, useState } from "react";
 import { checkPermission, requestPermission, startRecording, stopRecording } from "tauri-plugin-audio-recorder-api";
 import { key, setEventTypes, startListening, text } from "tauri-plugin-user-input-api";
+import { useConfig } from "./useConfig";
 // Note: uninstall this, '@tauri-apps/plugin-clipboard-manager';
 
 export function useAudioRecorder(){
     const [isRecording,setisRecording] = useState<boolean>(false);
     const [message, setMessage] = useState<string>("");
     const [view, setView] = useState<string>("App")
+    const {GroqAPIKey, setGroqAPIKey} = useConfig();
 
     //A variable for processing later, better error handling for message
 
@@ -104,6 +106,9 @@ export function useAudioRecorder(){
                 formData.append('file', audio, "output.wav")
                 const response = await fetch(url, {
                     method: "POST",
+                    headers: {
+                        'APIKey': GroqAPIKey
+                    },
                     body: formData
                 });
         const responseText = await response.text();
