@@ -16,7 +16,7 @@ function App() {
     <AppContext.Provider value={
       {isRecording, message, view, setView}
       }>
-    <div className="min-h-screen flex flex-col w-full bg-[#0f1115] text-slate-100">
+    <div className="h-screen flex flex-col w-full bg-[#0f1115]text-slate-100 overflow-hidden">
         <TopBar/>
         {view === 'Settings' ? <Settings/>: <MainWindow/>}
     </div>
@@ -33,6 +33,7 @@ export default App;
   2. Keyboard doesn't type properly (Fixed)
   3. For spaces, it just presses enter (Meaning it sends it in a prompt box), really wish a clipboard feature could be ipmlemented without removing user's clipboard or some alternative (Fixed)
   4. Limitation with Notepad - Doesn't type properly  
+  5. Combination doesn't work when app is focused (Fixed previously but showing up again)
 
   BASIC FEATURES (Before Alpha):
   1. Add working system theme option

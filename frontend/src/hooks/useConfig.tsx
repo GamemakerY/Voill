@@ -26,6 +26,11 @@ export function useConfig(){
             await store.set("GroqAPIKey", "");
             setGroqAPIKey("")
         }
+        else{
+            const savedAPIKey = await store.get<string>("GroqAPIKey") || "";
+            console.log("Initial GroqAPIKey: ", savedAPIKey)
+            setGroqAPIKey(savedAPIKey)
+        }
     }
 
     function applyTheme(selectedTheme:string){
@@ -50,12 +55,14 @@ export function useConfig(){
     async function writeConfig(theme?:string, GroqAPIKey?:string){
         if(typeof theme === 'string'){
             await store.set('theme', theme);
+            setTheme(theme)
             console.log("Theme set: ", theme)
             await store.save()
         }
         if(typeof GroqAPIKey === 'string'){
             await store.set('GroqAPIKey', GroqAPIKey);
-            console.log("GroqAPIKey set")
+            setGroqAPIKey(GroqAPIKey);
+            console.log("GroqAPIKey set: ", GroqAPIKey)
             await store.save()
         }
 
@@ -72,12 +79,10 @@ export function useConfig(){
     [theme]);
 
     const updateTheme = async (newTheme: string) => {
-        setTheme(newTheme);
         await writeConfig(newTheme, undefined);
     };
 
     const updateGroqAPIKey = async (newKey: string) => {
-        setGroqAPIKey(newKey);
         await writeConfig(undefined, newKey);
     };
 

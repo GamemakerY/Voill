@@ -12,11 +12,14 @@
   "app": {
     "windows": [
       {
+        "label": "main",
         "title": "voill",
         "width": 600,
         "height": 450,
         "decorations": false,
-        "transparent": true 
+        "transparent": true,
+        "resizable": true,
+        "shadow": false
       }
     ],
     "security": {
