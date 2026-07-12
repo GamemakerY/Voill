@@ -4,7 +4,7 @@ Ditch the keyboard and type with your voice!
 
 ## Tech Stack
 - **Frontend:** React, TypeScript, Tailwind CSS (ShadCN)
-- **Desktop Framework:** Tauri (for lightweight, system-level execution)
+- **Desktop Framework:** Tauri
 - **Backend:** FastAPI, Python
 - **AI Integration:** Large Language Model (LLM) for processing speech inputs (Groq API support for now)
 
