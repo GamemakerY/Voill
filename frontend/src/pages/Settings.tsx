@@ -1,10 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
-import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
+import { Input } from "@/components/ui/input";
 import { SettingCard } from "@/components/ui/settingcard";
 import { validateAPIKey } from "@/components/utils/auth";
 import { useConfig } from "@/contexts/ConfigContext";
-import { Form, Input } from "@base-ui/react";
+import { Form } from "@base-ui/react";
 import { useState } from "react";
 
 export function Settings(){
@@ -44,7 +44,7 @@ export function Settings(){
     <div className="relative flex items-center w-full max-w-3xl mt-2 group"> 
       <Form onSubmit={handleSubmit} className="w-full">
         <div className="flex flex-row items-center justify-between rounded-full border border-black dark:border-slate-800 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.15)] bg-transparent overflow-hidden h-10 pr-1.5">
-          <InputGroupInput 
+          <Input 
             name="GroqAPIKey" 
             onChange={(e)=> setInputKey(e.target.value)} 
             type="password" 
@@ -60,12 +60,6 @@ export function Settings(){
             </Button>
           </div>
         </div>
-
-        {/*<Input name="GroqAPIKey" onChange={(e) => setInputKey(e.target.value)} type="password" placeholder="gsk_..." className="w-full pl-4 pr-20 rounded-full border text-foreground border-black dark:border-slate-800 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.15)] h-10 text-sm bg-transparent focus-visible:ring-0"/>
-        <Button 
-      type="submit" size="sm" className="relative rounded-full border border-black dark:border-slate-800 bg-primary text-primary-foreground font-medium px-4 text-xs shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[0.5px] hover:translate-y-[0.5px] hover:shadow-none transition-all">
-        Save
-        </Button>*/}
       </Form >
     </div>
           }/>

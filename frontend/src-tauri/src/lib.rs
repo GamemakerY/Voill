@@ -1,4 +1,6 @@
 // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
+use tauri::Manager;
+
 #[tauri::command]
 fn greet(name: &str) -> String {
     format!("Hello, {}! You've been greeted from Rust!", name)
@@ -14,8 +16,23 @@ pub fn run() {
         .plugin(tauri_plugin_audio_recorder::init())
         .plugin(tauri_plugin_opener::init())
         .plugin(tauri_plugin_fs::init())
-        .setup(|_app| Ok(()))
+
+        .setup(|app| {
+            let salt_path = app
+                .path()
+                .app_local_data_dir()
+                .expect("could not resolve app local data path")
+                .join("salt.txt");
+            
+            app.handle().plugin(tauri_plugin_stronghold::Builder::with_argon2(&salt_path).build())?;
+            
+            Ok(())
+        })
+
         .invoke_handler(tauri::generate_handler![greet])
+        
+        // 4. Finally, run the application exactly once
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
+
 }
