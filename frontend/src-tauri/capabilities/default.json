@@ -15,6 +15,7 @@
     "store:allow-load",
     "store:allow-get",
     "store:allow-set",
+    "stronghold:default",
     {
       "identifier": "fs:allow-temp-read",
       "allow": [{ "path": "$TEMP/*" }]

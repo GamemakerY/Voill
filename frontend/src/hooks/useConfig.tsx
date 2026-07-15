@@ -13,8 +13,17 @@ export function useConfig(){
     const [GroqAPIKey, setGroqAPIKey] = useState<string>("");
 
     async function getRecord(store: any, key: string): Promise<string>{
-        const data = store.get(key);
+        const data = await store.get(key);
+        if (!data || data.length === 0) return "";
+        console.log("Got record: ", new TextDecoder().decode(new Uint8Array(data)))
         return new TextDecoder().decode(new Uint8Array(data))
+    }
+
+    async function insertRecord(store: any, stronghold:any, key:string, value:string){
+        const data = Array.from(new TextEncoder().encode(value));
+        await store.insert(key, data)
+        console.log("Inserted: ", data)
+        await stronghold.save();
     }
 
     const initStronghold = async () => {
@@ -36,10 +45,8 @@ export function useConfig(){
         }
     }
 
-    
-
     async function InitStore(){
-        const { client } = await initStronghold();
+        const { stronghold, client } = await initStronghold();
 
 
         if (!(await store.has("theme"))){
@@ -53,7 +60,17 @@ export function useConfig(){
             applyTheme(savedTheme)
         }
         try{
-            
+            const store_stronghold = client.getStore();
+            const key = 'my_key';
+            const APIKey = await getRecord(store_stronghold, key)
+
+            if(!(APIKey)){
+                console.log("Set API as empty")
+                await insertRecord(store_stronghold, stronghold, key, "");
+            }else{
+                setGroqAPIKey(APIKey)
+            }
+
         } catch (error){
             setGroqAPIKey("")
         }
@@ -97,14 +114,10 @@ export function useConfig(){
         }
         if(typeof GroqAPIKey === 'string'){
               const { stronghold, client } = await initStronghold();
-              const store = client.getStore();
+              const store_stronghold = client.getStore();
               const key = 'my_key';
 
-              const data = Array.from(new TextEncoder().encode(GroqAPIKey));
-
-              await store.insert(key, data);
-              
-              await stronghold.save();
+              await insertRecord(store_stronghold, stronghold, key, GroqAPIKey)
             
             {/*await store.set('GroqAPIKey', GroqAPIKey);
             setGroqAPIKey(GroqAPIKey);
