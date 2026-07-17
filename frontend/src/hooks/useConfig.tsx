@@ -3,6 +3,7 @@ import { LazyStore } from '@tauri-apps/plugin-store';
 import { appDataDir } from "@tauri-apps/api/path";
 import { Client, Stronghold } from '@tauri-apps/plugin-stronghold';
 
+//Important: Add an option to set randomized key password once for user, let it be for now
 
 const store = new LazyStore('config.json');
 export function useConfig(){
@@ -13,22 +14,25 @@ export function useConfig(){
     const [GroqAPIKey, setGroqAPIKey] = useState<string>("");
 
     async function getRecord(store: any, key: string): Promise<string>{
-        const data = await store.get(key);
-        if (!data || data.length === 0) return "";
-        console.log("Got record: ", new TextDecoder().decode(new Uint8Array(data)))
-        return new TextDecoder().decode(new Uint8Array(data))
+        try{
+            const data = await store.get(key);
+            if (!data || !Array.isArray(data) || data.length === 0) return "";
+            return new TextDecoder().decode(new Uint8Array(data));
+
+        } catch(error){
+            return "";
+        }
     }
 
     async function insertRecord(store: any, stronghold:any, key:string, value:string){
         const data = Array.from(new TextEncoder().encode(value));
         await store.insert(key, data)
-        console.log("Inserted: ", data)
         await stronghold.save();
     }
 
     const initStronghold = async () => {
         const vaultPath = `${await appDataDir()}/vault.hold`
-        const vaultPassword = 'vault password';
+        const vaultPassword = 'vault password'; //p1
         const stronghold = await Stronghold.load(vaultPath, vaultPassword);
 
         let client: Client;
@@ -48,25 +52,28 @@ export function useConfig(){
     async function InitStore(){
         const { stronghold, client } = await initStronghold();
 
-
         if (!(await store.has("theme"))){
             console.log("Theme not found")
             await store.set("theme", "light");
             setTheme("light")
+            await store.save()
         }
         else{
             console.log("Applying initial theme...")
             const savedTheme = await store.get<string>("theme") || "light";
+            setTheme(savedTheme)
             applyTheme(savedTheme)
         }
+
         try{
             const store_stronghold = client.getStore();
-            const key = 'my_key';
+            const key = 'my_key'; //p2
             const APIKey = await getRecord(store_stronghold, key)
 
-            if(!(APIKey)){
+            if(APIKey===null || APIKey===undefined){
                 console.log("Set API as empty")
                 await insertRecord(store_stronghold, stronghold, key, "");
+                setGroqAPIKey("")
             }else{
                 setGroqAPIKey(APIKey)
             }
@@ -74,16 +81,6 @@ export function useConfig(){
         } catch (error){
             setGroqAPIKey("")
         }
-        {/*if (!(await store.has("GroqAPIKey"))){
-            console.log("GroqAPIKey not found")
-            await store.set("GroqAPIKey", "");
-            setGroqAPIKey("")
-        }
-        else{
-            const savedAPIKey = await store.get<string>("GroqAPIKey") || "";
-            console.log("Initial GroqAPIKey: ", savedAPIKey)
-            setGroqAPIKey(savedAPIKey)
-        }*/}
     }
 
     function applyTheme(selectedTheme:string){
@@ -118,11 +115,7 @@ export function useConfig(){
               const key = 'my_key';
 
               await insertRecord(store_stronghold, stronghold, key, GroqAPIKey)
-            
-            {/*await store.set('GroqAPIKey', GroqAPIKey);
-            setGroqAPIKey(GroqAPIKey);
-            console.log("GroqAPIKey set: ", GroqAPIKey)
-            await store.save()*/}
+              setGroqAPIKey(GroqAPIKey)
         }
 
     }
@@ -136,6 +129,8 @@ export function useConfig(){
         applyTheme(theme);
         }}, 
     [theme]);
+
+
 
     const updateTheme = async (newTheme: string) => {
         await writeConfig(newTheme, undefined);

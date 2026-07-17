@@ -3,19 +3,22 @@ import { readFile } from "@tauri-apps/plugin-fs";
 import { useEffect, useRef, useState } from "react";
 import { checkPermission, requestPermission, startRecording, stopRecording } from "tauri-plugin-audio-recorder-api";
 import { key, setEventTypes, startListening, text } from "tauri-plugin-user-input-api";
-import { useConfig } from "./useConfig";
 // Note: uninstall this, '@tauri-apps/plugin-clipboard-manager';
 
-export function useAudioRecorder(){
+
+
+export function useAudioRecorder(GroqAPIKey: string){
     const [isRecording,setisRecording] = useState<boolean>(false);
     const [message, setMessage] = useState<string>("");
     const [view, setView] = useState<string>("App")
-    const {GroqAPIKey, setGroqAPIKey} = useConfig();
     const keyRef = useRef(GroqAPIKey)
 
-    keyRef.current = GroqAPIKey;
-
     //A variable for processing later, better error handling for message
+
+    useEffect(() => {
+        keyRef.current = GroqAPIKey;
+
+    }, [GroqAPIKey]);
 
     useEffect(()=>{
         let is_recording = false;
@@ -50,7 +53,6 @@ export function useAudioRecorder(){
                     //later add checks for permission
                     setisRecording(true);
                     is_recording = true;
-                    console.log("File will be saved in: ", tempFolder)
                     
                     await startRecording({
                         outputPath: (filePath),
@@ -104,7 +106,6 @@ export function useAudioRecorder(){
 
         async function getText(audio: Blob) {
             const url = 'http://localhost:8000/audios';
-            console.log("The Groq API Key:",keyRef.current)
             try{
                 const formData = new FormData();
                 formData.append('file', audio, "output.wav")
