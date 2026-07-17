@@ -11,22 +11,24 @@ from app.text_handler import TextHandler
 import time
 
 app = FastAPI()
-client = Client().client  
-voice_model = VoiceModel(client)
-texthandler = TextHandler(client)
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],  #Later
     allow_credentials=False,
     allow_methods=["*"],  
-    allow_headers=["APIKey", "Content-Type"],  
+    allow_headers=["*"],  
 )
 header_scheme = APIKeyHeader(name="APIKey", auto_error=False)
 
 @app.post("/audios", response_class=PlainTextResponse)
 async def process_audio(api_key:str | None = Depends(header_scheme), file: UploadFile = File(...), max_retries=3) -> str: 
-    print("API Key detected: ", api_key)
+
+    #Validate API Key first
+    client = Client(groq_api_key=api_key).client 
+    voice_model: VoiceModel = VoiceModel(client=client)
+    texthandler: TextHandler = TextHandler(client=client) 
+    
     final_text = ''
     for attempt in range(max_retries):
         try:
