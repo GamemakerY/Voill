@@ -2,7 +2,7 @@ import { join, tempDir } from "@tauri-apps/api/path";
 import { readFile } from "@tauri-apps/plugin-fs";
 import { useEffect, useRef, useState } from "react";
 import { checkPermission, requestPermission, startRecording, stopRecording } from "tauri-plugin-audio-recorder-api";
-import { key, setEventTypes, startListening, text } from "tauri-plugin-user-input-api";
+import { key, setEventTypes, startListening, stopListening, text } from "tauri-plugin-user-input-api";
 // Note: uninstall this, '@tauri-apps/plugin-clipboard-manager';
 
 
@@ -129,6 +129,10 @@ export function useAudioRecorder(GroqAPIKey: string){
     }
     setupRecorder();
 
-}, []);
+    return () => {
+        stopListening(); 
+    };
+
+}, [GroqAPIKey]);
     return{isRecording, message, view, setView};
 }
