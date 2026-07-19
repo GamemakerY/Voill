@@ -50,48 +50,48 @@ To run the application locally with hot-reloading:
 #### For Linux
 
 ```bash
-    # 1. Navigate to the backend directory
-    cd backend
+# 1. Navigate to the backend directory
+cd backend
 
-    # 2. Compile the python backend using uv and pyinstaller
-    uv run --with pyinstaller pyinstaller --onefile --clean --name api --add-data "prompts:prompts" main.py
+# 2. Compile the python backend using uv and pyinstaller
+uv run --with pyinstaller pyinstaller --onefile --clean --name api --add-data "prompts:prompts" main.py
 
-    # 3. Detect your Rust target triple architecture
-    TARGET_TRIPLE=$(rustc -Vv | grep host | cut -d ' ' -f 2)
+# 3. Detect your Rust target triple architecture
+TARGET_TRIPLE=$(rustc -Vv | grep host | cut -d ' ' -f 2)
 
-    # 4. Copy the compiled binary as a Tauri sidecar
-    cp dist/api "../frontend/src-tauri/binaries/api-$TARGET_TRIPLE"
+# 4. Copy the compiled binary as a Tauri sidecar
+cp dist/api "../frontend/src-tauri/binaries/api-$TARGET_TRIPLE"
 
-    # 5. Navigate to the frontend, clear any used ports, and run dev
-    cd ../frontend
-    fuser -k 8000/tcp # optional: clears the backend port if it was hung up
-    pnpm run tauri dev
+# 5. Navigate to the frontend, clear any used ports, and run dev
+cd ../frontend
+fuser -k 8000/tcp # optional: clears the backend port if it was hung up
+pnpm run tauri dev
 ```
 
 #### For Windows
 
 ```bash
-      # 1. Navigate to the backend directory
-      cd backend
+# 1. Navigate to the backend directory
+cd backend
 
-      # 2. Compile the python backend using uv and pyinstaller
-      uv run --with pyinstaller pyinstaller --onefile --clean --name api --add-data "prompts:prompts" main.py
+# 2. Compile the python backend using uv and pyinstaller
+uv run --with pyinstaller pyinstaller --onefile --clean --name api --add-data "prompts:prompts" main.py
 
-      # 3. Detect your Rust target triple architecture
-      $TARGET_TRIPLE = (rustc -Vv | Select-String "host:").Line.Split(" ")[1]
+# 3. Detect your Rust target triple architecture
+$TARGET_TRIPLE = (rustc -Vv | Select-String "host:").Line.Split(" ")[1]
 
-      # 4. Copy the compiled executable as a Windows Tauri sidecar
-      copy dist\api.exe "..\frontend\src-tauri\binaries\api-$TARGET_TRIPLE.exe"
+# 4. Copy the compiled executable as a Windows Tauri sidecar
+copy dist\api.exe "..\frontend\src-tauri\binaries\api-$TARGET_TRIPLE.exe"
 
-      # 5. Navigate to the frontend and launch development environment
-      cd ..\frontend
-      pnpm run tauri dev
+# 5. Navigate to the frontend and launch development environment
+cd ..\frontend
+pnpm run tauri dev
 ```
 
 Finally, run the build:
 
 ```bash
-    pnpm run tauri build
+pnpm run tauri build
 ```
 
 ## Roadmap & Known Issues
