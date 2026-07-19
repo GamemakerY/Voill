@@ -81,14 +81,7 @@ export function useAudioRecorder(GroqAPIKey: string){
                 }
             };
         });
-        const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
-        async function text_w_delay(response_text:string, delay:number=15){
-            for (const char of response_text) {
-                await text(char); 
-                await sleep(delay); 
-            }
-        }
         async function multiline_text(response_text:string){
             const lines = response_text.split('\n');
 
@@ -108,6 +101,7 @@ export function useAudioRecorder(GroqAPIKey: string){
             const url = 'http://localhost:8000/audios';
             try{
                 const formData = new FormData();
+                console.log(keyRef.current)
                 formData.append('file', audio, "output.wav")
                 const response = await fetch(url, {
                     method: "POST",
@@ -123,7 +117,7 @@ export function useAudioRecorder(GroqAPIKey: string){
         //text(responseText);
     }
     catch(error){
-    console.error(error.message);
+        console.error(error instanceof Error ? error.message : String(error));
 }
 }
     }

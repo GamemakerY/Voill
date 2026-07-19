@@ -7,9 +7,10 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
+# Node / Frontend Build Outputs
+node_modules/
+dist/
+dist-ssr/
 *.local
 
 # Editor directories and files
@@ -22,3 +23,22 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# ==========================================
+# Voill Custom Rules (Python & Tauri/Rust)
+# ==========================================
+
+# Private credentials - NEVER push to GitHub
+.env
+
+# Python compilation and environment bloat
+**/__pycache__/
+*.pyc
+backend/.venv/
+backend/build/
+backend/dist/
+backend/*.spec
+
+# Rust / Tauri build artifacts & local compiled sidecars
+frontend/src-tauri/target/
+frontend/src-tauri/binaries/*

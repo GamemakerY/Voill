@@ -8,7 +8,7 @@ interface SettingCardProps{
     children?: React.ReactNode;
 }
 
-export function SettingCard({title, description, learnMore, layout, children}:SettingCardProps){
+export function SettingCard({title, description, layout, children}:SettingCardProps){
   return(
       <div>
         {layout === 'h' ? 

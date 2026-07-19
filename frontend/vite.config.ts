@@ -11,4 +11,10 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  server: {
+    watch: {
+      // Prevents Vite from watching thousands of dynamic Rust build files
+      ignored: ["**/src-tauri/target/**"]
+    }
+  }
 })

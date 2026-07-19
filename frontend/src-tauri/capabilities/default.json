@@ -5,6 +5,7 @@
   "windows": ["main"],
   "permissions": [
     "core:default",
+    "log:default",
     "opener:default",
     "core:window:allow-start-dragging",
     "user-input:default",
@@ -19,6 +20,15 @@
     {
       "identifier": "fs:allow-temp-read",
       "allow": [{ "path": "$TEMP/*" }]
+    },
+    {
+      "identifier": "shell:allow-execute",
+      "allow": [
+        {
+          "name": "binaries/api",
+          "sidecar": true
+        }
+      ]
     }
   ]
 }
