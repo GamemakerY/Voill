@@ -48,7 +48,8 @@ Before starting, ensure you have the following installed on your machine:
 To run the application locally with hot-reloading:
 
 #### For Linux
-    ```bash
+
+```bash
     # 1. Navigate to the backend directory
     cd backend
 
@@ -65,10 +66,11 @@ To run the application locally with hot-reloading:
     cd ../frontend
     fuser -k 8000/tcp # optional: clears the backend port if it was hung up
     pnpm run tauri dev
-    ```
+```
 
 #### For Windows
-    ```bash
+
+```bash
       # 1. Navigate to the backend directory
       cd backend
 
@@ -84,13 +86,13 @@ To run the application locally with hot-reloading:
       # 5. Navigate to the frontend and launch development environment
       cd ..\frontend
       pnpm run tauri dev
-    ```
+```
 
 Finally, run the build:
 
-    ```bash
+```bash
     pnpm run tauri build
-    ```
+```
 
 ## Roadmap & Known Issues
 
