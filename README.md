@@ -1,21 +1,38 @@
-# Voill
-
-[![Platform - Windows](https://img.shields.io/badge/platform-Windows-blue.svg)](#) 
-[![Platform - Linux](https://img.shields.io/badge/platform-Linux-orange.svg)](#)
-
 <p align="center">
-  <img width="150" alt="voill-icon" src="https://github.com/user-attachments/assets/99778d35-6d9e-40b9-9cff-ce33bba86aa5" />
+  <img width="128" alt="Voill icon" src="https://github.com/user-attachments/assets/99778d35-6d9e-40b9-9cff-ce33bba86aa5" />
 </p>
+
 <h1 align="center">Voill</h1>
 
-Ditch the keyboard and type with your voice! 
-Voill brings instant, perfectly formatted text from your voice wherever you need it. Just hold Alt+R, speak, and release!
+<p align="center">
+  <a href="#"><img src="https://img.shields.io/badge/platform-Windows-blue.svg" alt="Platform - Windows" /></a>
+  <a href="#"><img src="https://img.shields.io/badge/platform-Linux-orange.svg" alt="Platform - Linux" /></a>
+</p>
+
+<p align="center">
+  Ditch the keyboard and type with your voice! <br>
+  Voill brings instant, perfectly formatted text from your voice wherever you need it. Just hold <strong>Alt+R</strong>, speak, and release!
+</p>
 
 ---
 
 ## Demo
 
 https://github.com/user-attachments/assets/7c3e5f61-9735-4725-ba09-1f24f1a2e7fe
+
+## How to Use
+
+Since Voill processes everything lighting-fast through Groq's API, you'll need to use your own API key when you use the application for the first time:
+
+1. **Get an API Key:** Head over to the [Groq Console](https://console.groq.com/keys) and generate a free API key.
+2. **Configure Voill:** Launch the app, click on the **Settings** icon, and paste your API key into the input field.
+3. **Start Typing:** 
+   * Click into any input field or text area on your computer.
+   * Hold down `Alt + R` and speak your thoughts naturally.
+   * Release the keys.
+   * Voill will instantly drop beautifully formatted text right where your cursor is!
+
+---
 
 
 ---
@@ -108,6 +125,7 @@ pnpm run tauri build
 - [ ] Sometimes lags and misses a letter or two
 
 ### Upcoming Features
-- [ ] Minimize to system tray with a small pill-shaped window summoning when needed.
+- [ ] Set tone as needed
+- [ ] Minimize to system tray with a small pill-shaped window summoning when needed
 - [ ] Full on-device transcription
 - [ ] Full on-device formatting by LLM
