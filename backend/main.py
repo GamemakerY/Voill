@@ -1,3 +1,5 @@
+from groq import APIConnectionError
+from groq import AuthenticationError
 import uvicorn
 import asyncio
 from groq import PermissionDeniedError
@@ -57,6 +59,25 @@ async def process_audio(api_key:str | None = Depends(header_scheme), file: Uploa
             raise e
     #Remove file, after processing
     return (final_text)
+
+@app.post("/testAPIKey")
+async def test_api_key(api_key: str = Depends(header_scheme)) -> bool:
+    try:
+        client = Client(groq_api_key=api_key).client 
+        client.models.list()
+
+        return True
+    
+    except AuthenticationError:
+        return False
+    
+    except APIConnectionError:
+        return False
+    
+    except Exception as e:
+        return False
+
+
 
 if __name__ == "__main__":
     uvicorn.run(app, host="127.0.0.1", port=8000, log_level="info")
