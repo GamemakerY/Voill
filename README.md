@@ -3,12 +3,17 @@
 [![Platform - Windows](https://img.shields.io/badge/platform-Windows-blue.svg)](#) 
 [![Platform - Linux](https://img.shields.io/badge/platform-Linux-orange.svg)](#)
 
+<img width="1024" height="1024" alt="voill-icon" src="https://github.com/user-attachments/assets/99778d35-6d9e-40b9-9cff-ce33bba86aa5" />
+
 Ditch the keyboard and type with your voice! 
 Voill brings instant, perfectly formatted text from your voice wherever you need it. Just hold Alt+R, speak, and release!
 
 ---
 
 ## Demo
+
+https://github.com/user-attachments/assets/7c3e5f61-9735-4725-ba09-1f24f1a2e7fe
+
 
 ---
 
