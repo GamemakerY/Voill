@@ -1,8 +1,5 @@
-from logging import exception
 from app.client import Client
 import pyaudio
-import wave
-import threading
 from app.text_handler import TextHandler
 from fastapi import UploadFile
 

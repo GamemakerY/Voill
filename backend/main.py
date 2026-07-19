@@ -74,7 +74,7 @@ async def test_api_key(api_key: str = Depends(header_scheme)) -> bool:
     except APIConnectionError:
         return False
     
-    except Exception as e:
+    except Exception:
         return False
 
 
