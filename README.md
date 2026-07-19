@@ -34,6 +34,17 @@ Since Voill processes everything lighting-fast through Groq's API, you'll need t
 
 ---
 
+## Installation & Download
+
+Want to use Voill without compiling it yourself? Download the latest pre-compiled package for your platform:
+
+1. Go to the [Voill Releases Page](https://github.com/your-username/voill/releases).
+2. Download the installer matching your operating system:
+   * **Windows:** `.msi` or `.exe` standalone installer. (Coming soon!)
+   * **Linux:** `.deb` package (Debian/Ubuntu) or portable `.AppImage`.
+3. Install and launch the application!
+
+> ⚠️ **Note for Windows & macOS Users:** Since early alpha releases are not signed with developer certificates,  the installer might be blocked on initial launch. On Windows, click *More Info* -> *Run Anyway* to bypass. 
 
 ---
 
@@ -129,3 +140,9 @@ pnpm run tauri build
 - [ ] Minimize to system tray with a small pill-shaped window summoning when needed
 - [ ] Full on-device transcription
 - [ ] Full on-device formatting by LLM
+
+---
+
+## License
+
+This project is licensed under the MIT License - see the `LICENSE` file for details.
