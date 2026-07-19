@@ -5,23 +5,29 @@ import { SettingCard } from "@/components/ui/settingcard";
 import { validateAPIKey } from "@/components/utils/auth";
 import { useConfig } from "@/contexts/ConfigContext";
 import { Form } from "@base-ui/react";
+import { Check } from "lucide-react";
 import { useState } from "react";
 
 export function Settings(){
 
   const { setTheme, setGroqAPIKey} = useConfig();
   const [ inputKey, setInputKey] = useState<string>('');
+  const [saved, setSaved] = useState(false);
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>){
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>){
     e.preventDefault();
 
-    const isValidated = validateAPIKey(inputKey)
+    const isValidated = await validateAPIKey(inputKey)
 
     if(isValidated){
       setGroqAPIKey(inputKey)
+      setSaved(true)
+      
     }
     else {
-      alert("Invalid API Key")
+      alert("The API key entered seems to be invalid. Please try again.")
+      //Make this extensive and better later
+      setSaved(false)
     }
 
   }
@@ -46,7 +52,9 @@ export function Settings(){
         <div className="flex flex-row items-center justify-between rounded-full border border-black dark:border-slate-800 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.15)] bg-transparent overflow-hidden h-10 pr-1.5">
           <Input 
             name="GroqAPIKey" 
-            onChange={(e)=> setInputKey(e.target.value)} 
+            onChange={(e)=> {setInputKey(e.target.value);
+              if (saved) setSaved(false);}
+            } 
             type="password" 
             placeholder="gsk_..." 
             className="flex-1 pl-4 border-0 bg-transparent text-foreground text-sm focus-visible:ring-0 focus-visible:ring-offset-0"
@@ -56,7 +64,13 @@ export function Settings(){
               type="submit" 
               size="sm" 
               className="rounded-full border border-black dark:border-slate-800 bg-primary text-primary-foreground font-medium px-4 text-xs shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[0.5px] hover:translate-y-[0.5px] hover:shadow-none transition-all">
-              Save
+              {saved ? (
+            <span className="flex items-center gap-1">
+            <Check className="h-3 w-3" /> Saved
+            </span>
+        ) : (
+          'Save'
+            )}
             </Button>
           </div>
         </div>

@@ -38,3 +38,10 @@ tauri-plugin-global-shortcut = "2"
 [profile.dev.package.scrypt]
 opt-level = 3
 
+[profile.release]
+opt-level = "z"        
+lto = true             
+codegen-units = 1      
+panic = "abort"        
+strip = true           
+

@@ -16,5 +16,9 @@ export default defineConfig({
       // Prevents Vite from watching thousands of dynamic Rust build files
       ignored: ["**/src-tauri/target/**"]
     }
+  },
+  build: {
+    sourcemap: false,   // Keeps massive developer debugging maps out of your compiled frontend bundle
+    minify: 'esbuild'   // Uses high-speed, structural compression to shrink asset footprints
   }
 })
