@@ -1,6 +1,5 @@
-from groq import Groq
-from pathlib import Path
-from pynput.keyboard import Controller
+import sys
+import os
 
 
 class TextHandler:
@@ -8,7 +7,14 @@ class TextHandler:
         self.client = client 
         print("Model initialized")
 
-        with open("prompts/v5.txt", 'r') as file:
+        if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'): #for pyinstaller
+            base_path = sys._MEIPASS
+        else:
+            base_path = os.path.abspath(".")
+
+        prompt_path = os.path.join(base_path, "prompts", "v5.txt")
+
+        with open(prompt_path, 'r', encoding='utf-8') as file:
             self.system_prompt = file.read()
 
     def out_text(self, text: str) -> str:

@@ -1,6 +1,6 @@
+import uvicorn
 import asyncio
 from groq import PermissionDeniedError
-from app import text_handler
 from fastapi import FastAPI, File, UploadFile, Depends
 from fastapi.security import APIKeyHeader
 from fastapi.middleware.cors import CORSMiddleware
@@ -57,6 +57,9 @@ async def process_audio(api_key:str | None = Depends(header_scheme), file: Uploa
             raise e
     #Remove file, after processing
     return (final_text)
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="127.0.0.1", port=8000, log_level="info")
 
 '''
 BUGS:
