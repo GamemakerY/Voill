@@ -40,8 +40,9 @@ Want to use Voill without compiling it yourself? Download the latest pre-compile
 
 1. Go to the [Voill Releases Page](https://github.com/your-username/voill/releases).
 2. Download the installer matching your operating system:
-   * **Windows:** `.msi` or `.exe` standalone installer. (Coming soon!)
+   * **Windows:** `.msi` or `.exe` standalone installer.
    * **Linux:** `.deb` package (Debian/Ubuntu) or portable `.AppImage`.
+   * **MacOS** Not available yet
 3. Install and launch the application!
 
 > ⚠️ **Note for Windows & macOS Users:** Since early alpha releases are not signed with developer certificates,  the installer might be blocked on initial launch. On Windows, click *More Info* -> *Run Anyway* to bypass. 
@@ -58,7 +59,7 @@ Want to use Voill without compiling it yourself? Download the latest pre-compile
 
 ## Development & Building from Source
 
-In this version, there is a Python backend (fastAPI) utilising Groq (Llama 3.3 70B) for voice trancsription and (Whisper Large V3 Turbo) for text formatting.
+In this version, there is a Python backend (fastAPI) utilising Groq (Llama 3.3 70B) for voice transcription and (Whisper Large V3 Turbo) for text formatting.
 
 The frontend is made in tauri, using shadCN components.
 
@@ -105,6 +106,7 @@ pnpm run tauri dev
 ```
 
 #### For Windows
+Please use PowerShell, not Command Prompt, for these:
 
 ```bash
 # 1. Navigate to the backend directory
