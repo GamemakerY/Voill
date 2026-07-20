@@ -38,7 +38,7 @@ Since Voill processes everything lighting-fast through Groq's API, you'll need t
 
 Want to use Voill without compiling it yourself? Download the latest pre-compiled package for your platform:
 
-1. Go to the [Voill Releases Page](https://github.com/your-username/voill/releases).
+1. Go to the [Voill Releases Page](https://github.com/GamemakerY/voill/releases).
 2. Download the installer matching your operating system:
    * **Windows:** `.msi` or `.exe` standalone installer.
    * **Linux:** `.deb` package (Debian/Ubuntu) or portable `.AppImage`.
