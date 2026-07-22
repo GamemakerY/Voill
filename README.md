@@ -20,6 +20,9 @@
 
 https://github.com/user-attachments/assets/7c3e5f61-9735-4725-ba09-1f24f1a2e7fe
 
+<img width="600" height="482" alt="image" src="https://github.com/user-attachments/assets/30f2c8c6-ab5f-4518-a5cf-ad2c93251e54" />
+
+
 ## How to Use
 
 Since Voill processes everything lighting-fast through Groq's API, you'll need to use your own API key when you use the application for the first time:
