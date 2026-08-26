@@ -18,3 +18,4 @@ Thumbs.db
 
 backend/app/record(Not to be used).py
 logs/
+frontend/src-tauri/binaries/api-x86_64-unknown-linux-gnu
