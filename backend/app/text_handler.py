@@ -22,7 +22,7 @@ class TextHandler:
 
         print("Starting...")
         self.completion = self.client.chat.completions.create(
-            model = "llama-3.3-70b-versatile", #Originally llama-3.1-8b-instant
+            model = "openai/gpt-oss-20b", #Originally llama-3.1-8b-instant, then llama-3.3-70b-versatile, both got removed by Groq now
             messages=[
                 {
                     "role":"system",

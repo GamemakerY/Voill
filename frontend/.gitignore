@@ -40,5 +40,7 @@ backend/dist/
 backend/*.spec
 
 # Rust / Tauri build artifacts & local compiled sidecars
-frontend/src-tauri/target/
-frontend/src-tauri/binaries/*
+src-tauri/target/
+src-tauri/bin/
+src-tauri/binaries/
+src-tauri/binaries/*
