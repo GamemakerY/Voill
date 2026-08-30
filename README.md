@@ -48,8 +48,6 @@ Want to use Voill without compiling it yourself? Download the latest pre-compile
    * **MacOS** Not available yet
 3. Install and launch the application!
 
-> ⚠️ **Note for Windows & macOS Users:** Since early alpha releases are not signed with developer certificates,  the installer might be blocked on initial launch. On Windows, click *More Info* -> *Run Anyway* to bypass. 
-
 ---
 
 ## Features
@@ -62,7 +60,7 @@ Want to use Voill without compiling it yourself? Download the latest pre-compile
 
 ## Development & Building from Source
 
-In this version, there is a Python backend (fastAPI) utilising Groq (Llama 3.3 70B) for voice transcription and (Whisper Large V3 Turbo) for text formatting.
+In this version, there is a Python backend (fastAPI) utilising Groq (Llama 3.3 70B, got discontinued, planning a new release with the change) for voice transcription and (Whisper Large V3 Turbo) for text formatting.
 
 The frontend is made in tauri, using shadCN components.
 
@@ -90,21 +88,18 @@ To run the application locally with hot-reloading:
 #### For Linux
 
 ```bash
-# 1. Navigate to the backend directory
 cd backend
 
-# 2. Compile the python backend using uv and pyinstaller
 uv run --with pyinstaller pyinstaller --onefile --clean --name api --add-data "prompts:prompts" main.py
 
-# 3. Detect your Rust target triple architecture
 TARGET_TRIPLE=$(rustc -Vv | grep host | cut -d ' ' -f 2)
 
-# 4. Copy the compiled binary as a Tauri sidecar
 cp dist/api "../frontend/src-tauri/binaries/api-$TARGET_TRIPLE"
 
-# 5. Navigate to the frontend, clear any used ports, and run dev
 cd ../frontend
+
 fuser -k 8000/tcp # optional: clears the backend port if it was hung up
+
 pnpm run tauri dev
 ```
 
@@ -112,24 +107,19 @@ pnpm run tauri dev
 Please use PowerShell, not Command Prompt, for these:
 
 ```bash
-# 1. Navigate to the backend directory
 cd backend
 
-# 2. Compile the python backend using uv and pyinstaller
 uv run --with pyinstaller pyinstaller --onefile --clean --name api --add-data "prompts:prompts" main.py
 
-# 3. Detect your Rust target triple architecture
 $TARGET_TRIPLE = (rustc -Vv | Select-String "host:").Line.Split(" ")[1]
 
-# 4. Copy the compiled executable as a Windows Tauri sidecar
 copy dist\api.exe "..\frontend\src-tauri\binaries\api-$TARGET_TRIPLE.exe"
 
-# 5. Navigate to the frontend and launch development environment
 cd ..\frontend
 pnpm run tauri dev
 ```
 
-Finally, run the build:
+Finally, run the build (Make sure you are still in the frontend folder):
 
 ```bash
 pnpm run tauri build
