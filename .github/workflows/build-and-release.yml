@@ -1,60 +1,88 @@
-name: Build and Release Executables
+name: Release App
 
 on:
-  workflow_dispatch:
   push:
     tags:
-      - '*'
-
-permissions:
-  contents: write
+      - 'v*'
 
 jobs:
   build:
+    permissions:
+      contents: write
     strategy:
+      fail-fast: false
       matrix:
         include:
-          - os: ubuntu-latest
-            artifact_name: Voill_Linux
-            asset_name: Voill_Linux
-          - os: windows-latest
-            artifact_name: Voill_Windows.exe
-            asset_name: Voill_Windows.exe
+          - platform: 'ubuntu-22.04'
+            os: 'linux'
+          - platform: 'windows-latest'
+            os: 'windows'
 
-    runs-on: ${{ matrix.os }}
+    runs-on: ${{ matrix.platform }}
 
     steps:
-      - name: Checkout Code
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install System C-Dependencies (Linux)
-        if: runner.os == 'Linux'
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y portaudio19-dev python3-dev
-
-      - name: Install uv
-        uses: astral-sh/setup-uv@v5
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          enable-cache: true
+          node-version: 20
 
-      - name: Set up Python
-        run: uv python install 3.10
-
-      - name: Install Project Dependencies
-        working-directory: ./backend
-        run: |
-          uv sync
-          uv pip install pyinstaller
-
-      - name: Build Executable with PyInstaller
-        working-directory: ./backend
-        run: |
-          uv run pyinstaller --onefile --name="${{ matrix.artifact_name }}" main.py
-
-      - name: Upload Binary to Release
-        uses: softprops/action-gh-release@v2
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
         with:
-          files: backend/dist/${{ matrix.asset_name }}
+          version: 8
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Setup Python & uv
+        uses: astral-sh/setup-uv@v2
+        with:
+          python-version: '3.10'
+
+      # Linux dependencies
+      - name: Install Linux dependencies
+        if: matrix.os == 'linux'
+        run: |
+          sudo apt update
+          sudo apt install -y libsoup-3.0-dev libwebkit2gtk-4.1-dev build-essential curl wget file libssl-dev libgtk-3-dev libayatana-appindicator3-dev librsvg2-dev
+
+      # Build Python Sidecar (Linux)
+      - name: Build Python Sidecar (Linux)
+        if: matrix.os == 'linux'
+        run: |
+          cd backend
+          uv run --with pyinstaller pyinstaller --onefile --clean --name api --add-data "prompts:prompts" main.py
+          TARGET_TRIPLE=$(rustc -Vv | grep host | cut -d ' ' -f 2)
+          mkdir -p ../frontend/src-tauri/binaries
+          cp dist/api "../frontend/src-tauri/binaries/api-$TARGET_TRIPLE"
+
+      # Build Python Sidecar (Windows)
+      - name: Build Python Sidecar (Windows)
+        if: matrix.os == 'windows'
+        shell: powershell
+        run: |
+          cd backend
+          uv run --with pyinstaller pyinstaller --onefile --clean --name api --add-data "prompts:prompts" main.py
+          $TARGET_TRIPLE = (rustc -Vv | Select-String "host:").Line.Split(" ")[1]
+          if (!(Test-Path "..\frontend\src-tauri\binaries")) { New-Item -ItemType Directory -Path "..\frontend\src-tauri\binaries" }
+          copy dist\api.exe "..\frontend\src-tauri\binaries\api-$TARGET_TRIPLE.exe"
+
+      - name: Install frontend dependencies
+        run: |
+          cd frontend
+          pnpm install
+
+      - name: Build Tauri App
+        uses: tauri-apps/tauri-action@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          projectPath: './frontend'
+          tagName: ${{ github.ref_name }}
+          releaseName: 'Release ${{ github.ref_name }}'
+          releaseBody: 'See commits for changes.'
+          releaseDraft: true
+          prerelease: false
