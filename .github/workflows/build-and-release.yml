@@ -74,9 +74,8 @@ jobs:
           copy dist\api.exe "..\frontend\src-tauri\binaries\api-$TARGET_TRIPLE.exe"
 
       - name: Install frontend dependencies
-        run: |
-          cd frontend
-          pnpm install
+        working-directory: ./frontend
+        run: pnpm install
 
       - name: Build Tauri App
         uses: tauri-apps/tauri-action@v0
