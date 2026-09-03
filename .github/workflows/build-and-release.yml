@@ -47,7 +47,7 @@ jobs:
         if: matrix.os == 'linux'
         run: |
           sudo apt update
-          sudo apt install -y libsoup-3.0-dev libwebkit2gtk-4.1-dev build-essential curl wget file libssl-dev libgtk-3-dev libayatana-appindicator3-dev librsvg2-dev
+          sudo apt install -y libsoup-3.0-dev libwebkit2gtk-4.1-dev build-essential curl wget file libssl-dev libgtk-3-dev libayatana-appindicator3-dev librsvg2-dev portaudio19-dev
 
       # Build Python Sidecar (Linux)
       - name: Build Python Sidecar (Linux)
