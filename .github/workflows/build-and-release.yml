@@ -60,6 +60,7 @@ jobs:
           TARGET_TRIPLE=$(rustc -Vv | grep host | cut -d ' ' -f 2)
           mkdir -p ../frontend/src-tauri/binaries
           cp dist/api "../frontend/src-tauri/binaries/api-$TARGET_TRIPLE"
+          chmod +x "../frontend/src-tauri/binaries/api-$TARGET_TRIPLE"
 
       # Build Python Sidecar (Windows)
       - name: Build Python Sidecar (Windows)
